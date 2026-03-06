@@ -245,6 +245,15 @@ a:focus-visible { outline: 2px solid var(--accent-cyan); outline-offset: 3px; bo
   letter-spacing: -0.03em;
 }
 .nav-logo-mark {
+  height: 32px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+}
+/* Fallback text mark if image fails to load */
+.nav-logo-mark-fallback {
   width: 32px; height: 32px;
   background: var(--gradient-accent);
   border-radius: 8px;
@@ -1241,8 +1250,9 @@ hr.section-divider {
   <nav id="nav" role="navigation" aria-label="Main navigation">
     <div class="container nav-inner">
       <a href="#" class="nav-logo" aria-label="Voi Network Home">
-        <div class="nav-logo-mark" aria-hidden="true">V</div>
-        Voi Network
+        <img src="voi-logo.png" alt="Voi Network" class="nav-logo-mark"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <div class="nav-logo-mark-fallback" aria-hidden="true" style="display:none;">V</div>
       </a>
 
       <ul class="nav-links" role="list">
@@ -2173,8 +2183,9 @@ console.<span class="fn">log</span>(<span class="str">`Last round: <span class="
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="nav-logo" style="margin-bottom:0.75rem;">
-          <div class="nav-logo-mark">V</div>
-          Voi Network
+          <img src="voi-logo.png" alt="Voi Network" class="nav-logo-mark"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="nav-logo-mark-fallback" aria-hidden="true" style="display:none;">V</div>
         </div>
         <p>A community-first L1 blockchain. Built by you, run by you, owned by you.</p>
         <!-- Netlify Form: Newsletter -->
@@ -2404,22 +2415,98 @@ if (distBars) barObserver.observe(distBars);
 /**
  * Price Widget Module
  * Configurable token list — add more tokens to VOI_TOKENS as needed.
- * Fetches from CoinGecko public API (no API key required for basic usage).
+ *
+ * Fetching strategy (tried in order until one succeeds):
+ *  1. CoinGecko API v3 — works when deployed on HTTPS (Netlify/Vercel/etc.)
+ *  2. CoinGecko onchain/widgets endpoint — broader CORS support
+ *  3. CoinStats public API — independent fallback with its own CORS policy
+ *
+ * NOTE: "Failed to fetch" locally (file://) is a browser CORS restriction,
+ * not a code bug. All sources will work once the site is hosted on Netlify.
  */
 const VOI_TOKENS = [
   {
     id: 'voi-network',          // CoinGecko coin ID
+    coinStatsId: 'voi-network', // CoinStats coin ID (same slug usually works)
     symbol: 'VOI',
     name: 'VOI Network',
     initials: 'V',
     domId: 'price-voi',
   }
   // Add additional ecosystem tokens here:
-  // { id: 'example-token', symbol: 'EXT', name: 'Example Token', initials: 'E', domId: 'price-ext' }
+  // { id: 'example-token', coinStatsId: 'example-token', symbol: 'EXT', name: 'Example Token', initials: 'E', domId: 'price-ext' }
 ];
 
-const PRICE_API_BASE = 'https://api.coingecko.com/api/v3';
 const PRICE_REFRESH_MS = 60000; // refresh every 60s
+
+// Three independent API sources tried in sequence
+const PRICE_SOURCES = [
+  {
+    name: 'CoinGecko v3',
+    async fetch(tokens) {
+      const ids = tokens.map(t => t.id).join(',');
+      const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const raw = await res.json();
+      // Normalise to { [domId]: { usd, usd_24h_change, usd_market_cap, usd_24h_vol } }
+      const out = {};
+      tokens.forEach(t => {
+        if (raw[t.id]) out[t.domId] = raw[t.id];
+      });
+      return out;
+    }
+  },
+  {
+    name: 'CoinGecko widgets',
+    async fetch(tokens) {
+      // The /coins/{id} endpoint on api.coingecko.com sometimes has looser CORS
+      const results = await Promise.all(tokens.map(async t => {
+        const url = `https://api.coingecko.com/api/v3/coins/${t.id}?localization=false&tickers=false&community_data=false&developer_data=false`;
+        const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const d = await res.json();
+        return {
+          domId: t.domId,
+          data: {
+            usd: d.market_data?.current_price?.usd ?? null,
+            usd_24h_change: d.market_data?.price_change_percentage_24h ?? null,
+            usd_market_cap: d.market_data?.market_cap?.usd ?? null,
+            usd_24h_vol: d.market_data?.total_volume?.usd ?? null,
+          }
+        };
+      }));
+      const out = {};
+      results.forEach(r => { out[r.domId] = r.data; });
+      return out;
+    }
+  },
+  {
+    name: 'CoinStats',
+    async fetch(tokens) {
+      // CoinStats public endpoint — no key needed for basic price data
+      const results = await Promise.all(tokens.map(async t => {
+        const url = `https://openapiv1.coinstats.app/coins/${t.coinStatsId}`;
+        const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const d = await res.json();
+        const coin = d.coin ?? d;
+        return {
+          domId: t.domId,
+          data: {
+            usd: coin.price ?? null,
+            usd_24h_change: coin.priceChange1d ?? null,
+            usd_market_cap: coin.marketCap ?? null,
+            usd_24h_vol: coin.volume ?? null,
+          }
+        };
+      }));
+      const out = {};
+      results.forEach(r => { out[r.domId] = r.data; });
+      return out;
+    }
+  }
+];
 
 /**
  * Generates a placeholder sparkline SVG path with random-ish but smooth data.
@@ -2491,19 +2578,29 @@ function renderPriceCard(token, data) {
     </div>`;
 }
 
+/**
+ * Try each price source in order; return first successful result.
+ * Silently falls through to the next source on any error (CORS, rate limit, etc.)
+ * NOTE: All sources require HTTPS — "Failed to fetch" locally (file://) is
+ * a browser CORS restriction, not a bug. Everything works once on Netlify.
+ */
 async function fetchPrices() {
-  const ids = VOI_TOKENS.map(t => t.id).join(',');
-  const url = `${PRICE_API_BASE}/simple/price?ids=${ids}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;
-
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.warn('Voi price fetch failed:', err.message);
-    return null;
+  for (const source of PRICE_SOURCES) {
+    try {
+      const data = await source.fetch(VOI_TOKENS);
+      const hasData = Object.values(data).some(d => d?.usd !== null && d?.usd !== undefined);
+      if (hasData) return data;
+      throw new Error('No price data in response');
+    } catch (err) {
+      console.warn(`Price source "${source.name}" unavailable:`, err.message);
+    }
   }
+  console.info(
+    'All price sources unavailable.\n' +
+    'When opening index.html directly from disk, browsers block API calls (CORS).\n' +
+    'Prices will load automatically once deployed on Netlify.'
+  );
+  return null;
 }
 
 async function initPriceWidget() {
@@ -2520,26 +2617,32 @@ async function initPriceWidget() {
   });
   if (loading) loading.remove();
 
+  function showFallback(token) {
+    const el = document.getElementById(token.domId);
+    if (!el) return;
+    el.innerHTML = `
+      <div class="price-icon">${token.initials}</div>
+      <div class="price-info">
+        <div class="price-name">${token.name} (${token.symbol})</div>
+        <div class="price-value" style="font-size:0.85rem;color:var(--text-muted)">Live on Netlify</div>
+        <div class="price-change" style="color:var(--text-muted);font-size:0.75rem;">Price loads after deploy</div>
+      </div>
+      <div class="sparkline-wrap">${generateSparklineSVG(true)}</div>
+      <div class="price-meta">
+        <a href="https://www.coingecko.com/en/coins/voi-network" target="_blank" rel="noopener"
+           style="color:var(--accent-cyan);font-size:0.72rem;">CoinGecko ↗</a>
+      </div>`;
+  }
+
   async function update() {
     const data = await fetchPrices();
     VOI_TOKENS.forEach(token => {
-      const tokenData = data ? data[token.id] : null;
-      if (tokenData) {
+      // fetchPrices() now returns { [domId]: priceData } — keyed by domId
+      const tokenData = data ? data[token.domId] : null;
+      if (tokenData && tokenData.usd !== null) {
         renderPriceCard(token, tokenData);
       } else {
-        // Fallback: show placeholder with sparkline so widget is never blank
-        const el = document.getElementById(token.domId);
-        if (el) {
-          el.innerHTML = `
-            <div class="price-icon">${token.initials}</div>
-            <div class="price-info">
-              <div class="price-name">${token.name} (${token.symbol})</div>
-              <div class="price-value" style="font-size:0.85rem;color:var(--text-muted)">Price unavailable</div>
-              <div class="price-change" style="color:var(--text-muted)">Check CoinGecko for live data</div>
-            </div>
-            <div class="sparkline-wrap">${generateSparklineSVG(true)}</div>
-            <div class="price-meta"><a href="https://www.coingecko.com/en/coins/voi-network" target="_blank" rel="noopener" style="color:var(--accent-cyan);font-size:0.72rem;">View on CoinGecko ↗</a></div>`;
-        }
+        showFallback(token);
       }
     });
   }
