@@ -1,0 +1,2570 @@
+<!DOCTYPE html>
+<!-- index.html — Voi Network: Community-First L1 Blockchain Explainer Site -->
+<!-- Single-page educational resource with live price widget, dark/light theme, and full responsiveness -->
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voi Network — Built by You. Run by You. Owned by You.</title>
+  <meta name="description" content="Voi is a high-performance L1 blockchain with ~2.8s block times, 10k+ TPS, instant finality, and community-first governance. 75% of tokens distributed to builders, users, and contributors over 20 years." />
+  <link rel="canonical" href="https://voi.network/" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- OpenGraph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://voi.network/" />
+  <meta property="og:title" content="Voi Network — Built by You. Run by You. Owned by You." />
+  <meta property="og:description" content="A community-owned L1 blockchain. 10k+ TPS, ~2.8s block times, instant finality. 75% of tokens for builders, users, and contributors." />
+  <meta property="og:image" content="https://voi.network/og-image.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Voi Network — Built by You. Run by You. Owned by You." />
+  <meta name="twitter:description" content="High-performance community L1 blockchain. 10k+ TPS, ~2.8s block times, instant finality." />
+  <meta name="twitter:image" content="https://voi.network/og-image.png" />
+
+  <!-- Preload fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" as="style" onload="this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" /></noscript>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Voi Network Explainer",
+    "url": "https://voi.network/",
+    "description": "Educational resource for the Voi blockchain ecosystem — a community-owned, high-performance L1 with governance, SDKs, and developer tooling.",
+    "about": {
+      "@type": "Thing",
+      "name": "Voi Blockchain",
+      "description": "Community-first L1 blockchain with 10k+ TPS, ~2.8s block times, instant finality, and decentralized governance via the Voi Council."
+    },
+    "educationalLevel": "Beginner to Advanced",
+    "audience": {
+      "@type": "Audience",
+      "audienceType": "Web3 developers, blockchain enthusiasts, node operators, community members"
+    }
+  }
+  </script>
+
+<style>
+/* ============================================================
+   CSS CUSTOM PROPERTIES & THEME SYSTEM
+   ============================================================ */
+:root {
+  /* Dark theme (default) */
+  --bg-base: #050811;
+  --bg-surface: #0c1220;
+  --bg-card: #0f1928;
+  --bg-card-hover: #162236;
+  --bg-glass: rgba(15, 25, 40, 0.7);
+  --border: rgba(0, 180, 255, 0.12);
+  --border-hover: rgba(0, 180, 255, 0.35);
+
+  --text-primary: #e8f4ff;
+  --text-secondary: #8aaecc;
+  --text-muted: #4a6880;
+
+  --accent-cyan: #00d4ff;
+  --accent-blue: #3b82f6;
+  --accent-violet: #8b5cf6;
+  --accent-green: #10b981;
+  --accent-amber: #f59e0b;
+
+  --glow-cyan: rgba(0, 212, 255, 0.2);
+  --glow-blue: rgba(59, 130, 246, 0.2);
+  --glow-violet: rgba(139, 92, 246, 0.2);
+
+  --gradient-hero: linear-gradient(135deg, #050811 0%, #091628 50%, #0a0e1a 100%);
+  --gradient-accent: linear-gradient(135deg, #00d4ff, #3b82f6, #8b5cf6);
+  --gradient-card: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(59,130,246,0.05));
+
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 40px rgba(0, 212, 255, 0.12);
+
+  --nav-height: 64px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] {
+  --bg-base: #f0f6ff;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f5f9ff;
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  --border: rgba(59, 130, 246, 0.18);
+  --border-hover: rgba(59, 130, 246, 0.4);
+
+  --text-primary: #0a1628;
+  --text-secondary: #3a5a7c;
+  --text-muted: #7a9ab8;
+
+  --accent-cyan: #0099cc;
+  --accent-blue: #2563eb;
+  --accent-violet: #7c3aed;
+
+  --glow-cyan: rgba(0, 153, 204, 0.12);
+  --glow-blue: rgba(37, 99, 235, 0.1);
+
+  --gradient-hero: linear-gradient(135deg, #e8f4ff 0%, #dbeeff 50%, #eff6ff 100%);
+  --gradient-card: linear-gradient(135deg, rgba(37,99,235,0.04), rgba(124,58,237,0.04));
+
+  --shadow-card: 0 4px 24px rgba(0, 80, 160, 0.1);
+  --shadow-glow: 0 0 40px rgba(0, 153, 204, 0.08);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  line-height: 1.65;
+  transition: background var(--transition), color var(--transition);
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(2.4rem, 6vw, 5.5rem); font-weight: 800; }
+h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; }
+h3 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 600; }
+h4 { font-size: 1rem; font-weight: 600; }
+
+p { color: var(--text-secondary); max-width: 65ch; }
+a { color: var(--accent-cyan); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--accent-blue); }
+a:focus-visible { outline: 2px solid var(--accent-cyan); outline-offset: 3px; border-radius: 4px; }
+
+/* ============================================================
+   LAYOUT UTILITIES
+   ============================================================ */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+@media (min-width: 640px) { .container { padding: 0 2rem; } }
+@media (min-width: 1024px) { .container { padding: 0 3rem; } }
+
+.section {
+  padding: 6rem 0;
+  position: relative;
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+.section-label {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 100px;
+  padding: 0.3em 1em;
+  margin-bottom: 1rem;
+}
+.section-header p {
+  margin: 0.75rem auto 0;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+#nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-height);
+  z-index: 900;
+  transition: background var(--transition), box-shadow var(--transition);
+}
+#nav.scrolled {
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 1px 0 var(--border);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-height);
+  gap: 1rem;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+}
+.nav-logo-mark {
+  width: 32px; height: 32px;
+  background: var(--gradient-accent);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+.nav-links {
+  display: none;
+  list-style: none;
+  gap: 0.25rem;
+  align-items: center;
+}
+@media (min-width: 1024px) { .nav-links { display: flex; } }
+.nav-links a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 0.4em 0.75em;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
+}
+.nav-links a:hover { color: var(--text-primary); background: var(--border); }
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.btn-theme {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  transition: all var(--transition);
+}
+.btn-theme:hover { border-color: var(--border-hover); color: var(--text-primary); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: var(--radius-sm);
+  padding: 0.55em 1.2em;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--gradient-accent);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0, 212, 255, 0.25);
+}
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(0, 212, 255, 0.35); color: #fff; }
+.btn-outline {
+  background: transparent;
+  color: var(--accent-cyan);
+  border: 1px solid var(--border-hover);
+}
+.btn-outline:hover { background: rgba(0,212,255,0.06); color: var(--accent-cyan); }
+
+/* Hamburger */
+.nav-hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 6px;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+}
+@media (min-width: 1024px) { .nav-hamburger { display: none; } }
+.nav-hamburger span {
+  display: block;
+  width: 22px; height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: all var(--transition);
+}
+.nav-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile menu */
+#mobile-menu {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0; right: 0;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 1.25rem 1.5rem;
+  z-index: 899;
+  transform: translateY(-110%);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+#mobile-menu.open { transform: translateY(0); }
+#mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 0.25rem; }
+#mobile-menu a {
+  display: block;
+  padding: 0.6em 0.75em;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 500;
+}
+#mobile-menu a:hover { color: var(--text-primary); background: var(--border); }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: calc(var(--nav-height) + 3rem) 1.25rem 5rem;
+  background: var(--gradient-hero);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  animation: orb-drift 12s ease-in-out infinite;
+}
+.hero-orb-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,212,255,0.18) 0%, transparent 70%);
+  top: -200px; left: -200px;
+  animation-delay: 0s;
+}
+.hero-orb-2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%);
+  bottom: -150px; right: -150px;
+  animation-delay: -6s;
+}
+.hero-orb-3 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+  top: 50%; left: 60%;
+  animation-delay: -3s;
+}
+
+@keyframes orb-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 30px) scale(0.97); }
+}
+
+/* Animated grid background */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.25);
+  border-radius: 100px;
+  padding: 0.35em 1.1em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  letter-spacing: 0.04em;
+  margin-bottom: 1.75rem;
+  animation: fade-up 0.8s ease both;
+}
+.hero-badge .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero-title {
+  animation: fade-up 0.8s 0.1s ease both;
+  margin-bottom: 1.5rem;
+}
+.hero-title .gradient-text {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-desc {
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  color: var(--text-secondary);
+  margin: 0 auto 2.5rem;
+  max-width: 600px;
+  animation: fade-up 0.8s 0.2s ease both;
+}
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+  animation: fade-up 0.8s 0.3s ease both;
+}
+.hero-stat {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.25rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  text-align: left;
+}
+.hero-stat-value {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  animation: fade-up 0.8s 0.4s ease both;
+}
+.btn-lg { font-size: 1rem; padding: 0.8em 2em; border-radius: var(--radius-md); }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   PRICE WIDGET
+   ============================================================ */
+#price-widget {
+  padding: 2rem 0;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.price-widget-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+}
+.price-token-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1.25rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  min-width: 260px;
+  flex: 1;
+  max-width: 380px;
+}
+.price-token-card:hover { border-color: var(--border-hover); box-shadow: var(--shadow-glow); }
+.price-icon {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--gradient-accent);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+.price-info { flex: 1; min-width: 0; }
+.price-name { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; margin-bottom: 0.1rem; }
+.price-value {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+.price-change {
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-top: 0.15rem;
+}
+.price-change.up { color: var(--accent-green); }
+.price-change.down { color: #f87171; }
+.price-meta { text-align: right; font-size: 0.72rem; color: var(--text-muted); line-height: 1.6; }
+.sparkline-wrap {
+  width: 80px; height: 36px;
+  flex-shrink: 0;
+}
+.sparkline-wrap svg { width: 100%; height: 100%; }
+.price-loading { opacity: 0.5; font-size: 0.85rem; color: var(--text-muted); }
+.price-error { font-size: 0.8rem; color: #f87171; }
+
+/* ============================================================
+   WHAT IS VOI
+   ============================================================ */
+#what-is-voi { background: var(--bg-base); }
+.what-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+@media (min-width: 1024px) { .what-grid { grid-template-columns: 1fr 1fr; gap: 4rem; } }
+.what-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.chain-diagram {
+  width: 100%;
+  max-width: 420px;
+}
+.what-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+@media (min-width: 640px) { .what-features { grid-template-columns: repeat(2, 1fr); } }
+.feat-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  transition: all var(--transition);
+}
+.feat-pill:hover { border-color: var(--border-hover); background: var(--bg-card-hover); transform: translateY(-2px); }
+.feat-pill-icon { font-size: 1.4rem; margin-bottom: 0.5rem; }
+.feat-pill-title { font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.2rem; }
+.feat-pill-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+
+/* ============================================================
+   CORE CONCEPTS CARDS
+   ============================================================ */
+#core-concepts { background: var(--bg-surface); }
+.concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+.concept-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.concept-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--gradient-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition);
+}
+.concept-card:hover { border-color: var(--border-hover); transform: translateY(-3px); box-shadow: var(--shadow-card); }
+.concept-card:hover::before { transform: scaleX(1); }
+.concept-icon {
+  width: 48px; height: 48px;
+  border-radius: var(--radius-sm);
+  background: var(--gradient-card);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  transition: all var(--transition);
+}
+.concept-card:hover .concept-icon { background: rgba(0,212,255,0.1); border-color: rgba(0,212,255,0.3); }
+.concept-card h3 { margin-bottom: 0.5rem; font-size: 1rem; }
+.concept-card p { font-size: 0.85rem; max-width: none; line-height: 1.6; }
+
+/* ============================================================
+   NETWORKS (TABS)
+   ============================================================ */
+#networks { background: var(--bg-base); }
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.35rem;
+  width: fit-content;
+  margin: 0 auto 2.5rem;
+}
+.tab-btn {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5em 1.2em;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.tab-btn.active {
+  background: var(--gradient-accent);
+  color: #fff;
+}
+.tab-btn:not(.active):hover { color: var(--text-primary); background: var(--border); }
+
+.tab-panels { position: relative; }
+.tab-panel {
+  display: none;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+}
+.tab-panel.active { display: block; animation: fade-in 0.3s ease; }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.network-panel-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.network-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3em 0.9em;
+  border-radius: 100px;
+}
+.network-badge.mainnet { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: var(--accent-green); }
+.network-badge.testnet { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: var(--accent-amber); }
+.network-badge.devnet { background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.3); color: var(--accent-violet); }
+
+.network-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.network-info-item label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
+}
+.network-info-item code {
+  font-size: 0.8rem;
+  color: var(--accent-cyan);
+  background: rgba(0,212,255,0.06);
+  padding: 0.25em 0.6em;
+  border-radius: 4px;
+  word-break: break-all;
+  display: inline-block;
+}
+
+/* ============================================================
+   GOVERNANCE
+   ============================================================ */
+#governance { background: var(--bg-surface); }
+.governance-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+@media (min-width: 1024px) { .governance-layout { grid-template-columns: 1fr 1fr; } }
+
+.token-dist {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+}
+.token-dist h3 { margin-bottom: 1.25rem; }
+.dist-bar-wrap { display: flex; flex-direction: column; gap: 0.75rem; }
+.dist-bar-row { display: flex; flex-direction: column; gap: 0.3rem; }
+.dist-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.dist-bar-track {
+  height: 10px;
+  background: var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.dist-bar-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: var(--gradient-accent);
+  transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 0%;
+}
+.dist-bar-fill.animated { /* triggered by IntersectionObserver */ }
+
+.governance-pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.gov-pillar {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  transition: all var(--transition);
+}
+.gov-pillar:hover { border-color: var(--border-hover); }
+.gov-pillar-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 0.1rem; }
+.gov-pillar h4 { font-family: var(--font-display); color: var(--text-primary); margin-bottom: 0.3rem; }
+.gov-pillar p { font-size: 0.85rem; max-width: none; }
+
+/* ============================================================
+   DEVELOPER ZONE
+   ============================================================ */
+#dev-zone { background: var(--bg-base); }
+.dev-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+}
+.dev-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  transition: all var(--transition);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.dev-card:hover { border-color: var(--border-hover); transform: translateY(-3px); box-shadow: var(--shadow-card), var(--shadow-glow); color: var(--text-primary); }
+.dev-card-header { display: flex; align-items: center; gap: 0.75rem; }
+.dev-card-icon {
+  width: 42px; height: 42px;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.dev-card-icon.cyan { background: rgba(0,212,255,0.1); }
+.dev-card-icon.blue { background: rgba(59,130,246,0.1); }
+.dev-card-icon.violet { background: rgba(139,92,246,0.1); }
+.dev-card-icon.green { background: rgba(16,185,129,0.1); }
+.dev-card h3 { font-size: 1rem; color: var(--text-primary); }
+.dev-card p { font-size: 0.85rem; color: var(--text-secondary); max-width: none; }
+.dev-card-link { font-size: 0.78rem; color: var(--accent-cyan); font-weight: 600; margin-top: auto; display: inline-flex; align-items: center; gap: 0.25rem; }
+
+/* Code snippet block */
+.code-block {
+  background: #020d1a;
+  border: 1px solid rgba(0,212,255,0.1);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  background: rgba(0,212,255,0.04);
+  border-bottom: 1px solid rgba(0,212,255,0.08);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+}
+.code-dots { display: flex; gap: 6px; }
+.code-dots span { width: 10px; height: 10px; border-radius: 50%; }
+.code-dots span:nth-child(1) { background: #ff5f57; }
+.code-dots span:nth-child(2) { background: #febc2e; }
+.code-dots span:nth-child(3) { background: #28c840; }
+.code-block pre {
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  font-family: 'Courier New', monospace;
+  color: #8aaecc;
+}
+.code-block pre .kw { color: #00d4ff; }
+.code-block pre .fn { color: #8b5cf6; }
+.code-block pre .str { color: #10b981; }
+.code-block pre .cm { color: #4a6880; font-style: italic; }
+
+/* ============================================================
+   ECOSYSTEM
+   ============================================================ */
+#ecosystem { background: var(--bg-surface); }
+.ecosystem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.eco-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.eco-card::after {
+  content: '↗';
+  position: absolute;
+  top: 1rem; right: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  transition: all var(--transition);
+}
+.eco-card:hover { border-color: var(--border-hover); transform: translateY(-3px); box-shadow: var(--shadow-card); color: var(--text-primary); }
+.eco-card:hover::after { color: var(--accent-cyan); transform: translate(2px, -2px); }
+.eco-card-cat {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  margin-bottom: 0.25rem;
+}
+.eco-card h4 { color: var(--text-primary); font-size: 0.95rem; }
+.eco-card p { font-size: 0.8rem; color: var(--text-muted); max-width: none; line-height: 1.5; }
+
+/* ============================================================
+   HOW-TO SECTIONS
+   ============================================================ */
+.howto-section { background: var(--bg-base); }
+.howto-section:nth-of-type(even) { background: var(--bg-surface); }
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.step-item {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  padding: 1.25rem 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition);
+}
+.step-item:hover { border-color: var(--border-hover); box-shadow: var(--shadow-card); }
+.step-num {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--gradient-accent);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+.step-content h4 { color: var(--text-primary); margin-bottom: 0.35rem; }
+.step-content p { font-size: 0.88rem; max-width: none; }
+.step-content a { font-size: 0.82rem; }
+
+/* ============================================================
+   NODE TYPES
+   ============================================================ */
+.node-types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+.node-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  transition: all var(--transition);
+}
+.node-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+.node-card-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+.node-card h4 { color: var(--text-primary); margin-bottom: 0.5rem; }
+.node-card p { font-size: 0.82rem; max-width: none; line-height: 1.55; }
+.node-req { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.75rem; }
+.node-req span {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.2em 0.7em;
+  border-radius: 100px;
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.15);
+  color: var(--accent-cyan);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border);
+  padding: 3.5rem 0 2rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  margin-bottom: 3rem;
+}
+@media (min-width: 640px) { .footer-grid { grid-template-columns: 1.5fr 1fr 1fr 1fr; } }
+.footer-brand p {
+  font-size: 0.88rem;
+  margin-top: 0.75rem;
+  max-width: 280px;
+}
+.footer-col h5 {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.footer-col a { font-size: 0.875rem; color: var(--text-secondary); transition: color var(--transition); }
+.footer-col a:hover { color: var(--accent-cyan); }
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.footer-bottom a { color: var(--text-muted); }
+.footer-bottom a:hover { color: var(--accent-cyan); }
+
+/* Newsletter form (Netlify Forms) */
+.newsletter-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+.newsletter-form input[type="email"] {
+  flex: 1;
+  min-width: 180px;
+  padding: 0.55em 1em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.newsletter-form input:focus { border-color: var(--border-hover); }
+
+/* ============================================================
+   FLOATING ELEMENTS
+   ============================================================ */
+#back-to-top {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--gradient-accent);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 16px rgba(0,212,255,0.3);
+  z-index: 800;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all var(--transition);
+  pointer-events: none;
+}
+#back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+#back-to-top:hover { transform: translateY(-3px) scale(1.05); }
+
+#quick-start-btn {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  background: var(--gradient-accent);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  padding: 0.65em 1.25em;
+  border-radius: 100px;
+  box-shadow: 0 4px 20px rgba(0,212,255,0.3);
+  z-index: 800;
+  display: flex; align-items: center; gap: 0.4rem;
+  transition: all var(--transition);
+}
+#quick-start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,212,255,0.4); }
+
+/* Modal */
+#modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 17, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.25rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+#modal-overlay.open { opacity: 1; pointer-events: auto; }
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  width: 100%;
+  max-width: 520px;
+  transform: scale(0.95);
+  transition: transform var(--transition);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+#modal-overlay.open .modal { transform: scale(1); }
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.modal-header h3 { font-size: 1.2rem; }
+.modal-close {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition);
+}
+.modal-close:hover { border-color: var(--border-hover); color: var(--text-primary); }
+.modal-paths {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+.modal-path {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  text-decoration: none;
+  transition: all var(--transition);
+  color: var(--text-primary);
+}
+.modal-path:hover { border-color: var(--border-hover); background: var(--bg-card-hover); color: var(--text-primary); }
+.modal-path-icon { font-size: 1.5rem; flex-shrink: 0; }
+.modal-path h4 { font-size: 0.95rem; margin-bottom: 0.15rem; }
+.modal-path p { font-size: 0.78rem; color: var(--text-muted); max-width: none; margin: 0; }
+
+/* ============================================================
+   SCROLL ANIMATIONS
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ============================================================
+   MISC
+   ============================================================ */
+.gradient-text {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+hr.section-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0;
+}
+.text-center { text-align: center; }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }
+</style>
+</head>
+
+<body>
+<!-- =============================================
+     NAVIGATION
+     ============================================= -->
+<header>
+  <nav id="nav" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo" aria-label="Voi Network Home">
+        <div class="nav-logo-mark" aria-hidden="true">V</div>
+        Voi Network
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="#what-is-voi">What is Voi</a></li>
+        <li><a href="#core-concepts">Concepts</a></li>
+        <li><a href="#networks">Networks</a></li>
+        <li><a href="#governance">Governance</a></li>
+        <li><a href="#dev-zone">Developers</a></li>
+        <li><a href="#ecosystem">Ecosystem</a></li>
+        <li><a href="#get-started">Get Started</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn-theme" id="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+          🌙
+        </button>
+        <a href="https://docs.voi.network" target="_blank" rel="noopener" class="btn btn-primary">Docs ↗</a>
+        <button class="nav-hamburger" id="nav-hamburger" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <nav id="mobile-menu" aria-label="Mobile navigation">
+    <ul role="list">
+      <li><a href="#what-is-voi">What is Voi</a></li>
+      <li><a href="#core-concepts">Concepts</a></li>
+      <li><a href="#networks">Networks</a></li>
+      <li><a href="#governance">Governance</a></li>
+      <li><a href="#dev-zone">Developers</a></li>
+      <li><a href="#ecosystem">Ecosystem</a></li>
+      <li><a href="#get-started">Get Started</a></li>
+      <li><a href="#run-node">Run a Node</a></li>
+      <li><a href="#build-on-voi">Build on Voi</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section id="hero" aria-label="Hero: Introduction to Voi Network">
+  <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+  <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+  <div class="hero-orb hero-orb-3" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot" aria-hidden="true"></span>
+      Community-First L1 Blockchain — Now Live on Mainnet
+    </div>
+
+    <h1 class="hero-title">
+      Built by You.<br>
+      <span class="gradient-text">Run by You.</span><br>
+      Owned by You.
+    </h1>
+
+    <p class="hero-desc">
+      Voi is a high-performance, community-owned Layer 1 blockchain — where 75% of all tokens go to the people who build, use, and grow the network over a 20-year emission plan.
+    </p>
+
+    <div class="hero-stats" role="list" aria-label="Key network statistics">
+      <div class="hero-stat" role="listitem">
+        <div class="hero-stat-value">~2.8s</div>
+        <div class="hero-stat-label">Block Time</div>
+      </div>
+      <div class="hero-stat" role="listitem">
+        <div class="hero-stat-value">10k+</div>
+        <div class="hero-stat-label">TPS Capacity</div>
+      </div>
+      <div class="hero-stat" role="listitem">
+        <div class="hero-stat-value">Instant</div>
+        <div class="hero-stat-label">Finality</div>
+      </div>
+      <div class="hero-stat" role="listitem">
+        <div class="hero-stat-value">75%</div>
+        <div class="hero-stat-label">Community Tokens</div>
+      </div>
+      <div class="hero-stat" role="listitem">
+        <div class="hero-stat-value">25+</div>
+        <div class="hero-stat-label">Community Projects</div>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <a href="#get-started" class="btn btn-primary btn-lg">Get Started →</a>
+      <a href="https://docs.voi.network" target="_blank" rel="noopener" class="btn btn-outline btn-lg">Read the Docs</a>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     LIVE PRICE WIDGET
+     ============================================= -->
+<section id="price-widget" aria-label="Live VOI token price">
+  <div class="container">
+    <div class="price-widget-inner" id="price-widget-inner">
+      <div class="price-loading" aria-live="polite" id="price-loading">Loading live price data…</div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     WHAT IS VOI
+     ============================================= -->
+<section id="what-is-voi" class="section" aria-labelledby="what-heading">
+  <div class="container">
+    <div class="what-grid">
+      <div class="reveal">
+        <div class="section-label" aria-hidden="true">Overview</div>
+        <h2 id="what-heading">What is Voi?</h2>
+        <p style="margin-top: 1rem;">
+          Voi is a multichain blockchain ecosystem built from the ground up for community ownership. Unlike chains where a corporation or a small group of insiders holds the majority of tokens, Voi flips the model: the community that builds, uses, and governs it receives the majority of the economic upside.
+        </p>
+        <p style="margin-top: 1rem;">
+          Technically, Voi delivers exceptional performance — roughly 2.8-second block times, instant finality (no waiting for confirmations), and capacity exceeding 10,000 transactions per second. Governance is handled by the Voi Council, an elected body chosen by token holders who vote on protocol upgrades, treasury allocation, and ecosystem direction.
+        </p>
+        <a href="https://docs.voi.network" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top: 1.75rem;">Explore Full Docs ↗</a>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <!-- Animated SVG Chain Diagram -->
+        <svg class="chain-diagram" viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Voi blockchain block diagram" role="img">
+          <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.6"/>
+            </linearGradient>
+            <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.5"/>
+              <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.5"/>
+            </linearGradient>
+          </defs>
+          <!-- Blocks -->
+          <rect x="10" y="120" width="80" height="80" rx="12" fill="url(#grad1)" stroke="#00d4ff" stroke-opacity="0.4" stroke-width="1.5"/>
+          <text x="50" y="157" text-anchor="middle" font-family="Syne,sans-serif" font-size="9" fill="#00d4ff" font-weight="700" opacity="0.9">BLOCK</text>
+          <text x="50" y="170" text-anchor="middle" font-family="Syne,sans-serif" font-size="8" fill="#8aaecc" opacity="0.8">N-2</text>
+          <rect x="10" y="210" width="80" height="16" rx="4" fill="#00d4ff" fill-opacity="0.08"/>
+          <text x="50" y="222" text-anchor="middle" font-family="monospace" font-size="7" fill="#4a6880">0xa3f2…</text>
+
+          <line x1="90" y1="160" x2="120" y2="160" stroke="#00d4ff" stroke-opacity="0.4" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+          <rect x="120" y="100" width="80" height="80" rx="12" fill="url(#grad1)" stroke="#00d4ff" stroke-opacity="0.5" stroke-width="1.5"/>
+          <text x="160" y="137" text-anchor="middle" font-family="Syne,sans-serif" font-size="9" fill="#00d4ff" font-weight="700" opacity="0.9">BLOCK</text>
+          <text x="160" y="150" text-anchor="middle" font-family="Syne,sans-serif" font-size="8" fill="#8aaecc" opacity="0.8">N-1</text>
+          <rect x="120" y="190" width="80" height="16" rx="4" fill="#00d4ff" fill-opacity="0.08"/>
+          <text x="160" y="202" text-anchor="middle" font-family="monospace" font-size="7" fill="#4a6880">0x19c1…</text>
+
+          <line x1="200" y1="140" x2="230" y2="140" stroke="#00d4ff" stroke-opacity="0.5" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+          <rect x="230" y="80" width="80" height="80" rx="12" fill="url(#grad2)" stroke="#3b82f6" stroke-opacity="0.7" stroke-width="1.5"/>
+          <text x="270" y="117" text-anchor="middle" font-family="Syne,sans-serif" font-size="9" fill="#00d4ff" font-weight="700" opacity="0.9">BLOCK</text>
+          <text x="270" y="130" text-anchor="middle" font-family="Syne,sans-serif" font-size="8" fill="#8aaecc" opacity="0.9">N (Latest)</text>
+          <rect x="230" y="170" width="80" height="16" rx="4" fill="#3b82f6" fill-opacity="0.08"/>
+          <text x="270" y="182" text-anchor="middle" font-family="monospace" font-size="7" fill="#4a6880">0xf4a8…</text>
+
+          <!-- TX circles inside block N -->
+          <circle cx="250" cy="100" r="5" fill="#00d4ff" fill-opacity="0.4"/>
+          <circle cx="263" cy="100" r="5" fill="#8b5cf6" fill-opacity="0.4"/>
+          <circle cx="276" cy="100" r="5" fill="#10b981" fill-opacity="0.4"/>
+          <circle cx="289" cy="100" r="5" fill="#00d4ff" fill-opacity="0.4"/>
+
+          <!-- Next block (pending) -->
+          <line x1="310" y1="120" x2="340" y2="120" stroke="#8b5cf6" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <rect x="340" y="90" width="50" height="60" rx="12" fill="none" stroke="#8b5cf6" stroke-opacity="0.35" stroke-width="1.5" stroke-dasharray="5,4"/>
+          <text x="365" y="124" text-anchor="middle" font-family="Syne,sans-serif" font-size="8" fill="#8b5cf6" opacity="0.6">NEXT</text>
+
+          <!-- Labels -->
+          <text x="50" y="250" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#4a6880">~2.8s</text>
+          <text x="160" y="230" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#4a6880">~2.8s</text>
+          <text x="270" y="210" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#4a6880">Instant Finality ✓</text>
+
+          <!-- Node icons at bottom -->
+          <circle cx="60" cy="285" r="14" fill="#0f1928" stroke="#00d4ff" stroke-opacity="0.3" stroke-width="1"/>
+          <text x="60" y="289" text-anchor="middle" font-size="10">🖥</text>
+          <circle cx="110" cy="285" r="14" fill="#0f1928" stroke="#3b82f6" stroke-opacity="0.3" stroke-width="1"/>
+          <text x="110" y="289" text-anchor="middle" font-size="10">🖥</text>
+          <circle cx="160" cy="285" r="14" fill="#0f1928" stroke="#8b5cf6" stroke-opacity="0.3" stroke-width="1"/>
+          <text x="160" y="289" text-anchor="middle" font-size="10">🖥</text>
+          <circle cx="210" cy="285" r="14" fill="#0f1928" stroke="#00d4ff" stroke-opacity="0.3" stroke-width="1"/>
+          <text x="210" y="289" text-anchor="middle" font-size="10">🖥</text>
+          <circle cx="260" cy="285" r="14" fill="#0f1928" stroke="#10b981" stroke-opacity="0.3" stroke-width="1"/>
+          <text x="260" y="289" text-anchor="middle" font-size="10">🖥</text>
+          <text x="200" y="315" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#4a6880">Decentralized Node Network</text>
+        </svg>
+
+        <div class="what-features">
+          <div class="feat-pill reveal reveal-delay-1">
+            <div class="feat-pill-icon">⚡</div>
+            <div class="feat-pill-title">~2.8s Block Time</div>
+            <div class="feat-pill-desc">Fast confirmation for responsive dApps</div>
+          </div>
+          <div class="feat-pill reveal reveal-delay-2">
+            <div class="feat-pill-icon">🔒</div>
+            <div class="feat-pill-title">Instant Finality</div>
+            <div class="feat-pill-desc">No chain reorganizations</div>
+          </div>
+          <div class="feat-pill reveal reveal-delay-2">
+            <div class="feat-pill-icon">🚀</div>
+            <div class="feat-pill-title">10,000+ TPS</div>
+            <div class="feat-pill-desc">Scales for real-world demand</div>
+          </div>
+          <div class="feat-pill reveal reveal-delay-3">
+            <div class="feat-pill-icon">🗳️</div>
+            <div class="feat-pill-title">On-chain Governance</div>
+            <div class="feat-pill-desc">Voi Council elected by holders</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- =============================================
+     CORE CONCEPTS
+     ============================================= -->
+<section id="core-concepts" class="section" aria-labelledby="concepts-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label" aria-hidden="true">Learn</div>
+      <h2 id="concepts-heading">Core Concepts</h2>
+      <p>The building blocks of the Voi ecosystem, explained simply.</p>
+    </div>
+
+    <div class="concepts-grid">
+      <article class="concept-card reveal">
+        <div class="concept-icon" aria-hidden="true">👛</div>
+        <h3>Accounts & Wallets</h3>
+        <p>Every participant on Voi has a public address (account) and a private key stored in a wallet. Wallets let you sign transactions, hold assets, and interact with apps — all without trusting a third party.</p>
+      </article>
+
+      <article class="concept-card reveal reveal-delay-1">
+        <div class="concept-icon" aria-hidden="true">🪙</div>
+        <h3>Assets (Fungible & NFTs)</h3>
+        <p>Voi supports fungible tokens (like currencies or governance tokens) and non-fungible tokens (NFTs) as first-class protocol-level assets — no separate contract deploy needed to issue them.</p>
+      </article>
+
+      <article class="concept-card reveal reveal-delay-2">
+        <div class="concept-icon" aria-hidden="true">📨</div>
+        <h3>Transactions</h3>
+        <p>Signed messages that update blockchain state — transferring VOI, calling a smart contract, opting into an asset, or modifying an app. Each transaction has a fee, validity window, and note field.</p>
+      </article>
+
+      <article class="concept-card reveal">
+        <div class="concept-icon" aria-hidden="true">📦</div>
+        <h3>Blocks</h3>
+        <p>A batch of ordered, validated transactions added to the chain roughly every 2.8 seconds. Each block contains a header, transaction list, certificates proving agreement, and a hash of the prior block.</p>
+      </article>
+
+      <article class="concept-card reveal reveal-delay-1">
+        <div class="concept-icon" aria-hidden="true">🤝</div>
+        <h3>Consensus</h3>
+        <p>Voi uses a Byzantine Fault Tolerant (BFT) consensus mechanism — nodes vote in rounds and reach agreement quickly, providing instant finality with no risk of chain reorganization.</p>
+      </article>
+
+      <article class="concept-card reveal reveal-delay-2">
+        <div class="concept-icon" aria-hidden="true">📝</div>
+        <h3>Smart Contracts</h3>
+        <p>Programs deployed on-chain (called Applications on Voi) that execute deterministically when called. They hold state, manage funds, and power everything from DeFi protocols to games.</p>
+      </article>
+
+      <article class="concept-card reveal">
+        <div class="concept-icon" aria-hidden="true">✍️</div>
+        <h3>Smart Signatures</h3>
+        <p>Stateless logic programs that approve or reject individual transactions based on conditions. Great for escrow accounts, subscription payments, and atomic swaps without deploying a full contract.</p>
+      </article>
+
+      <article class="concept-card reveal reveal-delay-1">
+        <div class="concept-icon" aria-hidden="true">🔐</div>
+        <h3>State Proofs</h3>
+        <p>Cryptographic proofs that let other chains and off-chain systems verify what happened on Voi without running a full node — the foundation for trustless cross-chain bridges.</p>
+      </article>
+
+      <article class="concept-card reveal reveal-delay-2">
+        <div class="concept-icon" aria-hidden="true">⚙️</div>
+        <h3>Virtual Machine (AVM)</h3>
+        <p>The Algorand Virtual Machine runs Voi smart contracts and smart signatures. It executes TEAL bytecode or ARC-compiled code in a sandboxed, deterministic environment with opcode budget limits.</p>
+      </article>
+
+      <article class="concept-card reveal">
+        <div class="concept-icon" aria-hidden="true">🖧</div>
+        <h3>Nodes</h3>
+        <p>Software running the Voi protocol. There are four types: <strong style="color:var(--text-primary)">Participation</strong> (vote in consensus), <strong style="color:var(--text-primary)">Relay</strong> (propagate data), <strong style="color:var(--text-primary)">Lite</strong> (lightweight access), and <strong style="color:var(--text-primary)">Archival</strong> (full history).</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- =============================================
+     NETWORKS
+     ============================================= -->
+<section id="networks" class="section" aria-labelledby="networks-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label" aria-hidden="true">Infrastructure</div>
+      <h2 id="networks-heading">Networks</h2>
+      <p>Voi operates three distinct networks for different stages of development.</p>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Voi Network environments">
+      <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-mainnet" id="tab-mainnet">🟢 Mainnet</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-testnet" id="tab-testnet">🟡 Testnet</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-devnet" id="tab-devnet">🟣 Devnet</button>
+    </div>
+
+    <div class="tab-panels reveal">
+      <div id="panel-mainnet" class="tab-panel active" role="tabpanel" aria-labelledby="tab-mainnet">
+        <div class="network-panel-header">
+          <div>
+            <span class="network-badge mainnet">● Mainnet — Live</span>
+            <h3 style="margin-top:0.5rem;">The Production Network</h3>
+          </div>
+        </div>
+        <p style="margin-bottom:1.5rem;">Mainnet is the live, real-value Voi blockchain. Transactions have economic consequences here — VOI tokens and assets hold real worth. Use mainnet for production dApps and actual token transfers.</p>
+        <div class="network-info-grid">
+          <div class="network-info-item">
+            <label>Network Name</label>
+            <code>voimain-v1</code>
+          </div>
+          <div class="network-info-item">
+            <label>Genesis ID</label>
+            <code>voimain-v1.0</code>
+          </div>
+          <div class="network-info-item">
+            <label>Block Time</label>
+            <code>~2.8 seconds</code>
+          </div>
+          <div class="network-info-item">
+            <label>RPC Endpoint</label>
+            <code>https://mainnet-api.voi.nodly.io</code>
+          </div>
+          <div class="network-info-item">
+            <label>Indexer</label>
+            <code>https://mainnet-idx.voi.nodly.io</code>
+          </div>
+          <div class="network-info-item">
+            <label>Explorer</label>
+            <code>voi.observer</code>
+          </div>
+        </div>
+      </div>
+
+      <div id="panel-testnet" class="tab-panel" role="tabpanel" aria-labelledby="tab-testnet">
+        <div class="network-panel-header">
+          <div>
+            <span class="network-badge testnet">● Testnet — Sandbox</span>
+            <h3 style="margin-top:0.5rem;">Pre-Production Testing</h3>
+          </div>
+        </div>
+        <p style="margin-bottom:1.5rem;">Testnet mirrors mainnet behavior but uses valueless test tokens. Deploy and test your contracts here before going live. Tokens can be obtained from the Voi testnet faucet.</p>
+        <div class="network-info-grid">
+          <div class="network-info-item">
+            <label>Network Name</label>
+            <code>voitest-v1</code>
+          </div>
+          <div class="network-info-item">
+            <label>Genesis ID</label>
+            <code>voitest-v1.0</code>
+          </div>
+          <div class="network-info-item">
+            <label>Block Time</label>
+            <code>~2.8 seconds</code>
+          </div>
+          <div class="network-info-item">
+            <label>RPC Endpoint</label>
+            <code>https://testnet-api.voi.nodly.io</code>
+          </div>
+          <div class="network-info-item">
+            <label>Faucet</label>
+            <code>faucet.voi.network</code>
+          </div>
+          <div class="network-info-item">
+            <label>Explorer</label>
+            <code>testnet.voi.observer</code>
+          </div>
+        </div>
+      </div>
+
+      <div id="panel-devnet" class="tab-panel" role="tabpanel" aria-labelledby="tab-devnet">
+        <div class="network-panel-header">
+          <div>
+            <span class="network-badge devnet">● Devnet — Local</span>
+            <h3 style="margin-top:0.5rem;">Local Development Environment</h3>
+          </div>
+        </div>
+        <p style="margin-bottom:1.5rem;">Devnet runs entirely on your machine — spin it up via Docker or a local node binary for rapid iteration. No tokens needed; perfect for unit testing contracts and debugging transactions offline.</p>
+        <div class="network-info-grid">
+          <div class="network-info-item">
+            <label>Setup</label>
+            <code>Docker / Local Binary</code>
+          </div>
+          <div class="network-info-item">
+            <label>Default Port</label>
+            <code>localhost:4001</code>
+          </div>
+          <div class="network-info-item">
+            <label>Token (default)</label>
+            <code>aaaaaaaaaa…(64 chars)</code>
+          </div>
+          <div class="network-info-item">
+            <label>Speed</label>
+            <code>Configurable (fast mode)</code>
+          </div>
+          <div class="network-info-item">
+            <label>Tooling</label>
+            <code>Voi Algod CLI, AlgoKit</code>
+          </div>
+          <div class="network-info-item">
+            <label>Docs</label>
+            <code>docs.voi.network/devnet</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- =============================================
+     GOVERNANCE & COMMUNITY
+     ============================================= -->
+<section id="governance" class="section" aria-labelledby="gov-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label" aria-hidden="true">Community</div>
+      <h2 id="gov-heading">Governance &amp; Community</h2>
+      <p>The chain belongs to the people who use and build it — not a corporation or VC fund.</p>
+    </div>
+
+    <div class="governance-layout">
+      <div class="reveal">
+        <div class="token-dist">
+          <h3>Token Distribution</h3>
+          <p style="font-size:0.88rem; margin-bottom:1.5rem;">Over a 20-year emission plan, the majority of VOI tokens flow to the community that actually builds and uses the network.</p>
+          <div class="dist-bar-wrap" id="dist-bars">
+            <div class="dist-bar-row">
+              <div class="dist-bar-label">
+                <span>Community (Builders, Users, Contributors)</span>
+                <strong style="color:var(--text-primary)">75%</strong>
+              </div>
+              <div class="dist-bar-track">
+                <div class="dist-bar-fill" data-width="75"></div>
+              </div>
+            </div>
+            <div class="dist-bar-row">
+              <div class="dist-bar-label">
+                <span>Ecosystem Development Fund</span>
+                <strong style="color:var(--text-primary)">12%</strong>
+              </div>
+              <div class="dist-bar-track">
+                <div class="dist-bar-fill" data-width="12"></div>
+              </div>
+            </div>
+            <div class="dist-bar-row">
+              <div class="dist-bar-label">
+                <span>Protocol Infrastructure</span>
+                <strong style="color:var(--text-primary)">8%</strong>
+              </div>
+              <div class="dist-bar-track">
+                <div class="dist-bar-fill" data-width="8"></div>
+              </div>
+            </div>
+            <div class="dist-bar-row">
+              <div class="dist-bar-label">
+                <span>Foundation &amp; Core Contributors</span>
+                <strong style="color:var(--text-primary)">5%</strong>
+              </div>
+              <div class="dist-bar-track">
+                <div class="dist-bar-fill" data-width="5"></div>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:1.25rem;">* Distribution percentages are illustrative based on Voi's community-first tokenomics model. See official docs for precise figures.</p>
+        </div>
+      </div>
+
+      <div class="governance-pillars reveal reveal-delay-1">
+        <div class="gov-pillar">
+          <div class="gov-pillar-icon">🗳️</div>
+          <div>
+            <h4>Voi Council</h4>
+            <p>An elected governing body chosen by VOI token holders. The Council votes on protocol upgrades, treasury spending, grant allocations, and ecosystem strategy — ensuring decisions reflect the community's will.</p>
+          </div>
+        </div>
+        <div class="gov-pillar">
+          <div class="gov-pillar-icon">🏗️</div>
+          <div>
+            <h4>25+ Community Projects</h4>
+            <p>From DeFi protocols and NFT marketplaces to developer tooling and community DAOs, the Voi ecosystem is shaped by its members — not a centralized product roadmap.</p>
+          </div>
+        </div>
+        <div class="gov-pillar">
+          <div class="gov-pillar-icon">📅</div>
+          <div>
+            <h4>20-Year Emission Plan</h4>
+            <p>Token emissions are designed for long-term sustainability. Rather than heavy early unlocks that reward insiders, Voi's schedule prioritizes ongoing community participation across two decades.</p>
+          </div>
+        </div>
+        <div class="gov-pillar">
+          <div class="gov-pillar-icon">🌐</div>
+          <div>
+            <h4>Open Participation</h4>
+            <p>Anyone can run a node, earn rewards, propose governance changes, or build and deploy applications — no whitelists, no gatekeepers, no permission required.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- =============================================
+     DEVELOPER ZONE
+     ============================================= -->
+<section id="dev-zone" class="section" aria-labelledby="dev-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label" aria-hidden="true">Build</div>
+      <h2 id="dev-heading">Developer Zone</h2>
+      <p>Everything you need to start building on Voi — nodes, APIs, SDKs, and more.</p>
+    </div>
+
+    <div class="dev-cards">
+      <a href="https://docs.voi.network" target="_blank" rel="noopener" class="dev-card reveal">
+        <div class="dev-card-header">
+          <div class="dev-card-icon cyan">🖥️</div>
+          <h3>Nodes &amp; Endpoints</h3>
+        </div>
+        <p>Connect to Voi via public community-run nodes or spin up your own. Decentralized RPC endpoints ensure no single provider can censor your application.</p>
+        <span class="dev-card-link">View node docs ↗</span>
+      </a>
+
+      <a href="https://docs.voi.network" target="_blank" rel="noopener" class="dev-card reveal reveal-delay-1">
+        <div class="dev-card-header">
+          <div class="dev-card-icon blue">🔌</div>
+          <h3>REST APIs (Algod &amp; Indexer)</h3>
+        </div>
+        <p>Submit transactions, query account state, and search historical data using the Algod and Indexer REST APIs — documented and compatible with standard Algorand tooling.</p>
+        <span class="dev-card-link">API reference ↗</span>
+      </a>
+
+      <a href="https://docs.voi.network" target="_blank" rel="noopener" class="dev-card reveal reveal-delay-2">
+        <div class="dev-card-header">
+          <div class="dev-card-icon violet">📦</div>
+          <h3>SDKs</h3>
+        </div>
+        <p>Official and community SDKs for JavaScript/TypeScript, Python, Go, and Java let you build Voi applications in your preferred language with full signing and transaction support.</p>
+        <span class="dev-card-link">SDK guides ↗</span>
+      </a>
+
+      <a href="https://docs.voi.network" target="_blank" rel="noopener" class="dev-card reveal">
+        <div class="dev-card-header">
+          <div class="dev-card-icon green">🛠️</div>
+          <h3>CLI &amp; AlgoKit</h3>
+        </div>
+        <p>Use the Voi Algod CLI or AlgoKit to scaffold projects, deploy contracts, run local devnet environments, and interact with the chain from your terminal.</p>
+        <span class="dev-card-link">Get the CLI ↗</span>
+      </a>
+
+      <a href="https://docs.voi.network" target="_blank" rel="noopener" class="dev-card reveal reveal-delay-1">
+        <div class="dev-card-header">
+          <div class="dev-card-icon cyan">📄</div>
+          <h3>Smart Contracts (ARC)</h3>
+        </div>
+        <p>Write contracts using the ARC framework (Algorand Request for Comment standards), compile to AVM bytecode, and deploy using the SDK or CLI with full lifecycle management.</p>
+        <span class="dev-card-link">Contract docs ↗</span>
+      </a>
+
+      <a href="https://docs.voi.network" target="_blank" rel="noopener" class="dev-card reveal reveal-delay-2">
+        <div class="dev-card-header">
+          <div class="dev-card-icon blue">🔍</div>
+          <h3>Contract Verification</h3>
+        </div>
+        <p>Verify deployed smart contract source code on Voi explorers so users can audit what they interact with. Builds transparency and trust in your application.</p>
+        <span class="dev-card-link">Verifier docs ↗</span>
+      </a>
+    </div>
+
+    <!-- Code example -->
+    <div class="reveal">
+      <h3 style="text-align:center; margin-bottom:1.25rem;">Quick Example: Connect &amp; Query</h3>
+      <div class="code-block" style="max-width:640px; margin:0 auto;">
+        <div class="code-block-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span>JavaScript / TypeScript</span>
+        </div>
+        <pre><span class="cm">// Install: npm install algosdk</span>
+<span class="kw">import</span> algosdk <span class="kw">from</span> <span class="str">'algosdk'</span>;
+
+<span class="cm">// Connect to Voi Mainnet</span>
+<span class="kw">const</span> client = <span class="kw">new</span> algosdk.<span class="fn">Algodv2</span>(
+  <span class="str">''</span>,                                         <span class="cm">// no token needed for public nodes</span>
+  <span class="str">'https://mainnet-api.voi.nodly.io'</span>,
+  <span class="str">''</span>
+);
+
+<span class="cm">// Fetch latest block info</span>
+<span class="kw">const</span> status = <span class="kw">await</span> client.<span class="fn">status</span>().<span class="fn">do</span>();
+console.<span class="fn">log</span>(<span class="str">`Last round: <span class="kw">${</span>status[<span class="str">'last-round'</span>]<span class="kw">}</span>`</span>);
+
+<span class="cm">// Send a payment transaction</span>
+<span class="kw">const</span> params = <span class="kw">await</span> client.<span class="fn">getTransactionParams</span>().<span class="fn">do</span>();
+<span class="kw">const</span> txn = algosdk.<span class="fn">makePaymentTxnWithSuggestedParamsFromObject</span>({
+  from: sender,
+  to: receiver,
+  amount: <span class="fn">algosdk.algosToMicroalgos</span>(<span class="str">1</span>),  <span class="cm">// 1 VOI</span>
+  suggestedParams: params,
+});</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- =============================================
+     ECOSYSTEM & PROJECTS
+     ============================================= -->
+<section id="ecosystem" class="section" aria-labelledby="eco-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label" aria-hidden="true">Explore</div>
+      <h2 id="eco-heading">Ecosystem &amp; Projects</h2>
+      <p>Discover the tools, apps, and infrastructure powering the Voi community.</p>
+    </div>
+
+    <div class="ecosystem-grid">
+      <a href="https://docs.voi.network" target="_blank" rel="noopener" class="eco-card reveal">
+        <div class="eco-card-cat">Documentation</div>
+        <h4>Voi Docs</h4>
+        <p>Official documentation hub for developers, node operators, and users.</p>
+      </a>
+      <a href="https://voi.observer" target="_blank" rel="noopener" class="eco-card reveal reveal-delay-1">
+        <div class="eco-card-cat">Explorer</div>
+        <h4>Voi Observer</h4>
+        <p>Block explorer for transactions, accounts, assets, and smart contracts.</p>
+      </a>
+      <a href="https://kibisis.io" target="_blank" rel="noopener" class="eco-card reveal reveal-delay-2">
+        <div class="eco-card-cat">Wallet</div>
+        <h4>Kibisis Wallet</h4>
+        <p>Community-built browser extension wallet for Voi and AVM chains.</p>
+      </a>
+      <a href="https://voi.network" target="_blank" rel="noopener" class="eco-card reveal">
+        <div class="eco-card-cat">Portal</div>
+        <h4>Voi Network</h4>
+        <p>The official Voi Network website with news, updates, and ecosystem info.</p>
+      </a>
+      <a href="https://nautilus.sh" target="_blank" rel="noopener" class="eco-card reveal reveal-delay-1">
+        <div class="eco-card-cat">Wallet</div>
+        <h4>Nautilus Wallet</h4>
+        <p>A full-featured browser and mobile wallet supporting Voi assets and dApps.</p>
+      </a>
+      <a href="#" class="eco-card reveal reveal-delay-2">
+        <div class="eco-card-cat">DeFi</div>
+        <h4>DEX / Swap</h4>
+        <p>Community DEX for trading VOI and ecosystem tokens trustlessly on-chain.</p>
+      </a>
+      <a href="#" class="eco-card reveal">
+        <div class="eco-card-cat">NFT</div>
+        <h4>NFT Marketplace</h4>
+        <p>Buy, sell, and mint NFTs created by the Voi community of artists and developers.</p>
+      </a>
+      <a href="#" class="eco-card reveal reveal-delay-1">
+        <div class="eco-card-cat">Staking</div>
+        <h4>Node Staking Portal</h4>
+        <p>Delegate to participation nodes and earn VOI rewards for securing the network.</p>
+      </a>
+      <a href="#" class="eco-card reveal reveal-delay-2">
+        <div class="eco-card-cat">Tooling</div>
+        <h4>Contract Verifier</h4>
+        <p>Verify and publish smart contract source code to enhance ecosystem transparency.</p>
+      </a>
+      <a href="https://discord.gg/voi" target="_blank" rel="noopener" class="eco-card reveal">
+        <div class="eco-card-cat">Community</div>
+        <h4>Discord</h4>
+        <p>Join thousands of builders, node runners, and users in the official Voi Discord.</p>
+      </a>
+      <a href="https://twitter.com/VoiNetwork" target="_blank" rel="noopener" class="eco-card reveal reveal-delay-1">
+        <div class="eco-card-cat">Social</div>
+        <h4>Twitter / X</h4>
+        <p>Follow @VoiNetwork for announcements, governance updates, and ecosystem news.</p>
+      </a>
+      <a href="https://github.com/VoiNetwork" target="_blank" rel="noopener" class="eco-card reveal reveal-delay-2">
+        <div class="eco-card-cat">Open Source</div>
+        <h4>GitHub</h4>
+        <p>Explore open-source Voi repositories, contribute code, or fork existing projects.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- =============================================
+     GET STARTED AS A USER
+     ============================================= -->
+<section id="get-started" class="section howto-section" aria-labelledby="user-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label" aria-hidden="true">For Users</div>
+      <h2 id="user-heading">Get Started as a User</h2>
+      <p>New to Voi? Here's your journey from zero to active participant.</p>
+    </div>
+
+    <ol class="steps-list" aria-label="Steps to get started as a Voi user">
+      <li class="step-item reveal">
+        <div class="step-num" aria-hidden="true">1</div>
+        <div class="step-content">
+          <h4>Create a Wallet</h4>
+          <p>Download a Voi-compatible wallet like <a href="https://kibisis.io" target="_blank" rel="noopener">Kibisis</a> or <a href="https://nautilus.sh" target="_blank" rel="noopener">Nautilus</a>. Generate a new account and securely store your 25-word seed phrase offline — this phrase is the only way to recover your funds.</p>
+        </div>
+      </li>
+      <li class="step-item reveal reveal-delay-1">
+        <div class="step-num" aria-hidden="true">2</div>
+        <div class="step-content">
+          <h4>Acquire VOI</h4>
+          <p>VOI can be acquired through supported exchanges or bridges. Check the Voi ecosystem page for current exchange listings and bridge options. If you're just exploring, grab testnet VOI from the <a href="https://faucet.voi.network" target="_blank" rel="noopener">Voi Faucet</a> at no cost.</p>
+        </div>
+      </li>
+      <li class="step-item reveal reveal-delay-2">
+        <div class="step-num" aria-hidden="true">3</div>
+        <div class="step-content">
+          <h4>Send Your First Transaction</h4>
+          <p>Open your wallet, enter a recipient address, specify an amount of VOI, and confirm. Your transaction will be included in a block within roughly 2.8 seconds and achieves instant finality — no waiting needed.</p>
+        </div>
+      </li>
+      <li class="step-item reveal">
+        <div class="step-num" aria-hidden="true">4</div>
+        <div class="step-content">
+          <h4>Explore Ecosystem Apps</h4>
+          <p>Browse DEXs, NFT marketplaces, games, and community tools in the Voi ecosystem. Interact using your wallet — you remain in full control of your keys at all times.</p>
+        </div>
+      </li>
+      <li class="step-item reveal reveal-delay-1">
+        <div class="step-num" aria-hidden="true">5</div>
+        <div class="step-content">
+          <h4>Participate in Governance</h4>
+          <p>As a VOI holder, you can vote on Voi Council elections and governance proposals. Check the official Voi governance portal to see active votes and make your voice heard in the protocol's direction.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- =============================================
+     HOW TO RUN A NODE
+     ============================================= -->
+<section id="run-node" class="section howto-section" aria-labelledby="node-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label" aria-hidden="true">Node Operators</div>
+      <h2 id="node-heading">How to Run a Node</h2>
+      <p>Strengthen the network and earn VOI rewards by running a Voi node.</p>
+    </div>
+
+    <div class="node-types-grid">
+      <div class="node-card reveal">
+        <div class="node-card-icon">🗳️</div>
+        <h4>Participation Node</h4>
+        <p>Actively votes in consensus rounds. Running one directly contributes to Voi's security and decentralization — and earns block rewards.</p>
+        <div class="node-req">
+          <span>4 CPU cores</span>
+          <span>8 GB RAM</span>
+          <span>100 GB SSD</span>
+          <span>Stable internet</span>
+        </div>
+      </div>
+      <div class="node-card reveal reveal-delay-1">
+        <div class="node-card-icon">📡</div>
+        <h4>Relay Node</h4>
+        <p>Propagates blocks and transactions across the network. Relay nodes improve performance and resilience by forming the network's backbone.</p>
+        <div class="node-req">
+          <span>8 CPU cores</span>
+          <span>16 GB RAM</span>
+          <span>500 GB SSD</span>
+          <span>High bandwidth</span>
+        </div>
+      </div>
+      <div class="node-card reveal reveal-delay-2">
+        <div class="node-card-icon">💡</div>
+        <h4>Lite Node</h4>
+        <p>Connects to the network without storing full history. Perfect for dApp backends, wallet services, or reading on-chain state without full archival overhead.</p>
+        <div class="node-req">
+          <span>2 CPU cores</span>
+          <span>4 GB RAM</span>
+          <span>20 GB SSD</span>
+        </div>
+      </div>
+      <div class="node-card reveal reveal-delay-3">
+        <div class="node-card-icon">🗄️</div>
+        <h4>Archival Node</h4>
+        <p>Stores the complete chain history from genesis. Powers block explorers, analytics platforms, and any application that needs deep historical queries.</p>
+        <div class="node-req">
+          <span>8 CPU cores</span>
+          <span>32 GB RAM</span>
+          <span>2+ TB SSD</span>
+          <span>High bandwidth</span>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps-list" aria-label="Steps to run a Voi node">
+      <li class="step-item reveal">
+        <div class="step-num" aria-hidden="true">1</div>
+        <div class="step-content">
+          <h4>Choose Your Node Type</h4>
+          <p>Decide which node type fits your goals and hardware. Most community participants start with a Participation node to earn rewards and contribute to consensus.</p>
+        </div>
+      </li>
+      <li class="step-item reveal reveal-delay-1">
+        <div class="step-num" aria-hidden="true">2</div>
+        <div class="step-content">
+          <h4>Provision Your Server</h4>
+          <p>Use a VPS, dedicated server, or home machine that meets the hardware requirements. Ubuntu 22.04 LTS is the recommended operating system for Voi nodes.</p>
+        </div>
+      </li>
+      <li class="step-item reveal reveal-delay-2">
+        <div class="step-num" aria-hidden="true">3</div>
+        <div class="step-content">
+          <h4>Install the Voi Node Software</h4>
+          <p>Follow the official <a href="https://docs.voi.network" target="_blank" rel="noopener">node setup guide at docs.voi.network</a> to download, configure, and start your node using the provided installation scripts.</p>
+        </div>
+      </li>
+      <li class="step-item reveal">
+        <div class="step-num" aria-hidden="true">4</div>
+        <div class="step-content">
+          <h4>Register Participation Keys</h4>
+          <p>Generate and register your participation keys to allow your node to vote in consensus. Keys have a validity window and must be renewed periodically to maintain participation.</p>
+        </div>
+      </li>
+      <li class="step-item reveal reveal-delay-1">
+        <div class="step-num" aria-hidden="true">5</div>
+        <div class="step-content">
+          <h4>Monitor &amp; Maintain</h4>
+          <p>Use the Voi node dashboard or CLI tools to monitor sync status, rewards earned, and uptime. Keep your software updated and keys active to maximize rewards.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="text-center mt-3 reveal">
+      <a href="https://docs.voi.network" target="_blank" rel="noopener" class="btn btn-primary btn-lg">Full Node Setup Guide ↗</a>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- =============================================
+     HOW TO BUILD ON VOI
+     ============================================= -->
+<section id="build-on-voi" class="section howto-section" aria-labelledby="build-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label" aria-hidden="true">Developers</div>
+      <h2 id="build-heading">How to Build on Voi</h2>
+      <p>Your path from idea to deployed dApp on Voi — no permission required.</p>
+    </div>
+
+    <ol class="steps-list" aria-label="Development path for building on Voi">
+      <li class="step-item reveal">
+        <div class="step-num" aria-hidden="true">1</div>
+        <div class="step-content">
+          <h4>Read "Start Here"</h4>
+          <p>Visit <a href="https://docs.voi.network" target="_blank" rel="noopener">docs.voi.network</a> and read the Start Here section to understand Voi's architecture, the AVM, account model, and transaction structure before writing any code.</p>
+        </div>
+      </li>
+      <li class="step-item reveal reveal-delay-1">
+        <div class="step-num" aria-hidden="true">2</div>
+        <div class="step-content">
+          <h4>Spin Up a Devnet Environment</h4>
+          <p>Use AlgoKit or the Voi Algod CLI to launch a local devnet instance. This gives you a fast, disposable blockchain environment with pre-funded accounts so you can iterate quickly without real tokens.</p>
+        </div>
+      </li>
+      <li class="step-item reveal reveal-delay-2">
+        <div class="step-num" aria-hidden="true">3</div>
+        <div class="step-content">
+          <h4>Install an SDK &amp; Connect</h4>
+          <p>Install the <code style="color:var(--accent-cyan);font-size:0.85rem;">algosdk</code> package for JavaScript/TypeScript (or the SDK for your language). Connect to your local devnet, then testnet, and finally mainnet using the appropriate endpoint URLs.</p>
+        </div>
+      </li>
+      <li class="step-item reveal">
+        <div class="step-num" aria-hidden="true">4</div>
+        <div class="step-content">
+          <h4>Write &amp; Deploy a Smart Contract</h4>
+          <p>Write your contract using PyTEAL, Beaker, or TEALScript. Compile it to AVM bytecode and deploy with the SDK's <code style="color:var(--accent-cyan);font-size:0.85rem;">makeApplicationCreateTxn</code> call, or via the AlgoKit CLI deploy command.</p>
+        </div>
+      </li>
+      <li class="step-item reveal reveal-delay-1">
+        <div class="step-num" aria-hidden="true">5</div>
+        <div class="step-content">
+          <h4>Test on Testnet</h4>
+          <p>Move from devnet to testnet to validate your contract's behavior in a realistic environment with real network conditions. Grab free testnet VOI from the Voi faucet to pay transaction fees.</p>
+        </div>
+      </li>
+      <li class="step-item reveal reveal-delay-2">
+        <div class="step-num" aria-hidden="true">6</div>
+        <div class="step-content">
+          <h4>Verify &amp; Monitor on Mainnet</h4>
+          <p>Once confident, deploy to mainnet, verify your source code via the contract verifier, and monitor activity using the Voi Observer block explorer and your own indexer queries.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="text-center mt-3 reveal">
+      <a href="https://docs.voi.network" target="_blank" rel="noopener" class="btn btn-primary btn-lg">Developer Docs ↗</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer aria-label="Site footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo" style="margin-bottom:0.75rem;">
+          <div class="nav-logo-mark">V</div>
+          Voi Network
+        </div>
+        <p>A community-first L1 blockchain. Built by you, run by you, owned by you.</p>
+        <!-- Netlify Form: Newsletter -->
+        <form name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="newsletter-form" aria-label="Newsletter signup">
+          <input type="hidden" name="form-name" value="newsletter" />
+          <input type="hidden" name="bot-field" />
+          <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address" />
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+      </div>
+
+      <div class="footer-col">
+        <h5>Learn</h5>
+        <ul>
+          <li><a href="#what-is-voi">What is Voi?</a></li>
+          <li><a href="#core-concepts">Core Concepts</a></li>
+          <li><a href="#networks">Networks</a></li>
+          <li><a href="#governance">Governance</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Build</h5>
+        <ul>
+          <li><a href="https://docs.voi.network" target="_blank" rel="noopener">Documentation</a></li>
+          <li><a href="#dev-zone">Developer Zone</a></li>
+          <li><a href="#build-on-voi">Build Guide</a></li>
+          <li><a href="#run-node">Run a Node</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Community</h5>
+        <ul>
+          <li><a href="https://discord.gg/voi" target="_blank" rel="noopener">Discord</a></li>
+          <li><a href="https://twitter.com/VoiNetwork" target="_blank" rel="noopener">Twitter / X</a></li>
+          <li><a href="https://github.com/VoiNetwork" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="#ecosystem">Ecosystem</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 Voi Network. Community-owned and operated.</span>
+      <span>This site is an educational resource. Not financial advice.</span>
+      <a href="https://docs.voi.network" target="_blank" rel="noopener">Docs ↗</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating buttons -->
+<button id="back-to-top" aria-label="Back to top" title="Back to top">↑</button>
+<button id="quick-start-btn" aria-haspopup="dialog" aria-controls="modal-overlay">⚡ Quick Start</button>
+
+<!-- Quick Start Modal -->
+<div id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-title">Choose Your Path</h3>
+      <button class="modal-close" id="modal-close" aria-label="Close dialog">✕</button>
+    </div>
+    <div class="modal-paths">
+      <a href="#get-started" class="modal-path" id="mp-user">
+        <div class="modal-path-icon">👤</div>
+        <div>
+          <h4>I'm a User</h4>
+          <p>Create a wallet, get VOI, explore apps</p>
+        </div>
+      </a>
+      <a href="#run-node" class="modal-path" id="mp-node">
+        <div class="modal-path-icon">🖥️</div>
+        <div>
+          <h4>I'm a Node Operator</h4>
+          <p>Run a participation or relay node</p>
+        </div>
+      </a>
+      <a href="#build-on-voi" class="modal-path" id="mp-dev">
+        <div class="modal-path-icon">👨‍💻</div>
+        <div>
+          <h4>I'm a Developer</h4>
+          <p>Build dApps and smart contracts</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+     JAVASCRIPT
+     ============================================= -->
+<script>
+/* ============================================================
+   THEME TOGGLE
+   ============================================================ */
+const themeToggle = document.getElementById('theme-toggle');
+const html = document.documentElement;
+const stored = localStorage.getItem('voi-theme') || 'dark';
+html.setAttribute('data-theme', stored);
+themeToggle.textContent = stored === 'dark' ? '🌙' : '☀️';
+
+themeToggle.addEventListener('click', () => {
+  const current = html.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
+  localStorage.setItem('voi-theme', next);
+});
+
+/* ============================================================
+   NAVIGATION: SCROLL BEHAVIOR
+   ============================================================ */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+  backToTop.classList.toggle('visible', window.scrollY > 400);
+}, { passive: true });
+
+/* ============================================================
+   MOBILE MENU
+   ============================================================ */
+const hamburger = document.getElementById('nav-hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+
+hamburger.addEventListener('click', () => {
+  const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+  hamburger.setAttribute('aria-expanded', String(!expanded));
+  mobileMenu.classList.toggle('open', !expanded);
+});
+
+// Close menu on link click
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    hamburger.setAttribute('aria-expanded', 'false');
+    mobileMenu.classList.remove('open');
+  });
+});
+
+/* ============================================================
+   BACK TO TOP
+   ============================================================ */
+const backToTop = document.getElementById('back-to-top');
+backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+/* ============================================================
+   QUICK START MODAL
+   ============================================================ */
+const modalOverlay = document.getElementById('modal-overlay');
+const qsBtn = document.getElementById('quick-start-btn');
+const modalClose = document.getElementById('modal-close');
+
+function openModal() {
+  modalOverlay.classList.add('open');
+  modalOverlay.setAttribute('aria-hidden', 'false');
+  modalClose.focus();
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  modalOverlay.classList.remove('open');
+  modalOverlay.setAttribute('aria-hidden', 'true');
+  qsBtn.focus();
+  document.body.style.overflow = '';
+}
+
+qsBtn.addEventListener('click', openModal);
+modalClose.addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && modalOverlay.classList.contains('open')) closeModal(); });
+
+// Close modal and scroll on path click
+['mp-user','mp-node','mp-dev'].forEach(id => {
+  document.getElementById(id).addEventListener('click', closeModal);
+});
+
+/* ============================================================
+   NETWORK TABS
+   ============================================================ */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.getAttribute('aria-controls');
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(target).classList.add('active');
+  });
+});
+
+/* ============================================================
+   INTERSECTION OBSERVER: SCROLL REVEALS
+   ============================================================ */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ============================================================
+   INTERSECTION OBSERVER: TOKEN DISTRIBUTION BARS
+   ============================================================ */
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.dist-bar-fill').forEach(fill => {
+        const w = fill.getAttribute('data-width');
+        setTimeout(() => { fill.style.width = w + '%'; }, 200);
+      });
+      barObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+const distBars = document.getElementById('dist-bars');
+if (distBars) barObserver.observe(distBars);
+
+/* ============================================================
+   LIVE PRICE WIDGET MODULE
+   ============================================================ */
+
+/**
+ * Price Widget Module
+ * Configurable token list — add more tokens to VOI_TOKENS as needed.
+ * Fetches from CoinGecko public API (no API key required for basic usage).
+ */
+const VOI_TOKENS = [
+  {
+    id: 'voi-network',          // CoinGecko coin ID
+    symbol: 'VOI',
+    name: 'VOI Network',
+    initials: 'V',
+    domId: 'price-voi',
+  }
+  // Add additional ecosystem tokens here:
+  // { id: 'example-token', symbol: 'EXT', name: 'Example Token', initials: 'E', domId: 'price-ext' }
+];
+
+const PRICE_API_BASE = 'https://api.coingecko.com/api/v3';
+const PRICE_REFRESH_MS = 60000; // refresh every 60s
+
+/**
+ * Generates a placeholder sparkline SVG path with random-ish but smooth data.
+ * Replace the data array with real 7d price history for production.
+ */
+function generateSparklineSVG(isUp) {
+  const pts = 20;
+  const w = 80, h = 36;
+  const vals = [];
+  let cur = 0.5;
+  for (let i = 0; i < pts; i++) {
+    cur += (Math.random() - 0.5) * 0.15;
+    cur = Math.max(0.05, Math.min(0.95, cur));
+    vals.push(cur);
+  }
+  // nudge last value to indicate direction
+  vals[pts - 1] = isUp
+    ? Math.max(vals[pts - 1], vals[0] + 0.08)
+    : Math.min(vals[pts - 1], vals[0] - 0.08);
+
+  const min = Math.min(...vals), max = Math.max(...vals), range = max - min || 0.01;
+  const toX = i => (i / (pts - 1)) * w;
+  const toY = v => h - ((v - min) / range) * (h - 4) - 2;
+
+  const d = vals.map((v, i) => `${i === 0 ? 'M' : 'L'}${toX(i).toFixed(1)},${toY(v).toFixed(1)}`).join(' ');
+  const color = isUp ? '#10b981' : '#f87171';
+
+  return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+    <path d="${d}" stroke="${color}" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+}
+
+function formatUSD(n) {
+  if (n === null || n === undefined) return '—';
+  if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B';
+  if (n >= 1e6) return '$' + (n / 1e6).toFixed(2) + 'M';
+  if (n >= 1000) return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  if (n >= 1) return '$' + n.toFixed(4);
+  return '$' + n.toFixed(6);
+}
+
+function formatChange(pct) {
+  if (pct === null || pct === undefined) return { text: '—', cls: '' };
+  const sign = pct >= 0 ? '+' : '';
+  return { text: `${sign}${pct.toFixed(2)}%`, cls: pct >= 0 ? 'up' : 'down' };
+}
+
+function renderPriceCard(token, data) {
+  const price = data?.usd ?? null;
+  const change = data?.usd_24h_change ?? null;
+  const cap = data?.usd_market_cap ?? null;
+  const vol = data?.usd_24h_vol ?? null;
+  const chg = formatChange(change);
+
+  const el = document.getElementById(token.domId);
+  if (!el) return;
+
+  el.innerHTML = `
+    <div class="price-icon">${token.initials}</div>
+    <div class="price-info">
+      <div class="price-name">${token.name} (${token.symbol})</div>
+      <div class="price-value">${price !== null ? formatUSD(price) : '—'}</div>
+      <div class="price-change ${chg.cls}">${chg.text} (24h)</div>
+    </div>
+    <div class="sparkline-wrap">${generateSparklineSVG(change >= 0)}</div>
+    <div class="price-meta">
+      <div>MCap: ${formatUSD(cap)}</div>
+      <div>Vol: ${formatUSD(vol)}</div>
+    </div>`;
+}
+
+async function fetchPrices() {
+  const ids = VOI_TOKENS.map(t => t.id).join(',');
+  const url = `${PRICE_API_BASE}/simple/price?ids=${ids}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.warn('Voi price fetch failed:', err.message);
+    return null;
+  }
+}
+
+async function initPriceWidget() {
+  const container = document.getElementById('price-widget-inner');
+  const loading = document.getElementById('price-loading');
+
+  // Build card placeholders
+  VOI_TOKENS.forEach(token => {
+    const card = document.createElement('div');
+    card.className = 'price-token-card';
+    card.id = token.domId;
+    card.innerHTML = `<div class="price-loading">Loading ${token.symbol}…</div>`;
+    container.appendChild(card);
+  });
+  if (loading) loading.remove();
+
+  async function update() {
+    const data = await fetchPrices();
+    VOI_TOKENS.forEach(token => {
+      const tokenData = data ? data[token.id] : null;
+      if (tokenData) {
+        renderPriceCard(token, tokenData);
+      } else {
+        // Fallback: show placeholder with sparkline so widget is never blank
+        const el = document.getElementById(token.domId);
+        if (el) {
+          el.innerHTML = `
+            <div class="price-icon">${token.initials}</div>
+            <div class="price-info">
+              <div class="price-name">${token.name} (${token.symbol})</div>
+              <div class="price-value" style="font-size:0.85rem;color:var(--text-muted)">Price unavailable</div>
+              <div class="price-change" style="color:var(--text-muted)">Check CoinGecko for live data</div>
+            </div>
+            <div class="sparkline-wrap">${generateSparklineSVG(true)}</div>
+            <div class="price-meta"><a href="https://www.coingecko.com/en/coins/voi-network" target="_blank" rel="noopener" style="color:var(--accent-cyan);font-size:0.72rem;">View on CoinGecko ↗</a></div>`;
+        }
+      }
+    });
+  }
+
+  await update();
+  setInterval(update, PRICE_REFRESH_MS);
+}
+
+// Init price widget
+initPriceWidget();
+
+/* ============================================================
+   SMOOTH SCROLL FOR ANCHOR LINKS
+   ============================================================ */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      const offset = 72;
+      const y = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+# netlify.toml — Voi Network explainer site deployment config
+# Handles SPA fallback, security headers, asset caching, and form support.
+
+# ──────────────────────────────────────────
+# BUILD SETTINGS
+# ──────────────────────────────────────────
+[build]
+  publish = "."          # Root directory contains index.html
+  command = ""           # Static site — no build step required
+
+# ──────────────────────────────────────────
+# REDIRECTS
+# ──────────────────────────────────────────
+[[redirects]]
+  from = "/*"
+  to   = "/index.html"
+  status = 200           # SPA-style fallback for any unknown path
+
+# ──────────────────────────────────────────
+# GLOBAL SECURITY & PERFORMANCE HEADERS
+# ──────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options            = "DENY"
+    X-Content-Type-Options     = "nosniff"
+    X-XSS-Protection           = "1; mode=block"
+    Referrer-Policy            = "strict-origin-when-cross-origin"
+    Permissions-Policy         = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security  = "max-age=63072000; includeSubDomains; preload"
+    Content-Security-Policy    = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.coingecko.com; img-src 'self' data: https:; frame-ancestors 'none';"
+
+# Long-lived cache for fonts and static assets
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# HTML: no cache so updates deploy instantly
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# ──────────────────────────────────────────
+# NETLIFY FORMS
+# ──────────────────────────────────────────
+# Forms are detected automatically via the data-netlify="true" attribute
+# on <form> elements in index.html. No extra config needed here.
+# Submissions appear in the Netlify dashboard under Forms.
+#
+# Form names used in this site:
+#   - "newsletter"   → footer email signup
+
+# ──────────────────────────────────────────
+# ENVIRONMENT (placeholder — set real values in Netlify dashboard)
+# ──────────────────────────────────────────
+[context.production.environment]
+  NODE_ENV = "production"
+
+[context.deploy-preview.environment]
+  NODE_ENV = "preview"
